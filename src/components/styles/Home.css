@@ -11,6 +11,15 @@
     justify-content: center;
     padding: 1rem;
   }
+
+  .home-static-bg {
+    position: absolute;
+    inset: 0;
+    background-image: url('/src/assets/imagen-fondo.png');
+    background-size: cover;
+    background-position: center;
+    z-index: -2;
+  }
   
   .home-background {
     position: absolute;

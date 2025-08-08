@@ -2,8 +2,11 @@ import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import emailjs from '@emailjs/browser';
 import './Editor.css';
-import frame from '../assets/Frame2.png';
+import frame from '../assets/Frame3.png';
 import logoAllianz from '../assets/logo-allianz.png'; // 👈 Asegúrate de tener este archivo
+import logo1 from '../assets/logo-allianz.png';
+import logo2 from '../assets/logo2.png'; // tu segundo logo
+import './styles/Header.css';
 
 const Editor = () => {
   const videoRef = useRef(null);
@@ -132,94 +135,100 @@ const Editor = () => {
   const showCaptured = capturedImage || imageSrc;
 
   return (
-    <div className="editor-container">
-      <div className="frame-container">
-        <img src={frame} alt="Frame" className="frame-img" />
-        {showCaptured ? (
-          <img src={showCaptured} alt="Captured" className="photo-preview" />
-        ) : (
-          <video ref={videoRef} className="video-feed" />
-        )}
-        <div className="message-overlay">{message}</div>
+    <div className="home-static-bg">
+      <div className="custom-header" onClick={() => navigate('/')}>
+       <img src={logo1} alt="Logo 1" className="custom-header-logo" />
+       <img src={logo2} alt="Logo 2" className="custom-header-logo" />
       </div>
-
-      <input
-        type="text"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        className="message-input"
-        placeholder="Escribe tu mensaje aquí"
-      />
-
-      <div className="email-input">
-        <label htmlFor="personalEmail">Correo personal (opcional):</label>
-        <input
-          type="email"
-          id="personalEmail"
-          placeholder="tucorreo@gmail.com"
-          value={personalEmail}
-          onChange={(e) => setPersonalEmail(e.target.value)}
-        />
-      </div>
-
-      <div className="button-container">
-        {!streaming && !imageSrc && (
-          <button className="editor-button" onClick={startCamera}>
-            Activar Cámara
-          </button>
-        )}
-        {streaming && !capturedImage && cameraReady && (
-          <button className="editor-button" onClick={handleCapture}>
-            Tomar Foto
-          </button>
-        )}
-
-        {showCaptured && (
-          <>
-            <button className="editor-button" onClick={handleSend}>
-              Enviar
-            </button>
-            <button className="editor-button" onClick={handleRetry}>
-              Repetir
-            </button>
-          </>
-        )}
-      </div>
-
-      <footer className="footer">
-        <p>
-          <a href="https://www.allianz.co/seguridad-y-politica-de-datos/politicas-de-privacidad.html" target="_blank" rel="noopener noreferrer">
-            Política de privacidad
-          </a>
-          {' '}|{' '}
-          <a href="https://www.allianz.co/cookie-policy.html" target="_blank" rel="noopener noreferrer">
-            Política de cookies
-          </a>
-        </p>
-      </footer>
-
-      <canvas ref={canvasRef} style={{ display: 'none' }} />
-
-      {/* POPUP de agradecimiento */}
-      {showPopup && (
-        <div style={{
-          position: 'fixed',
-          top: 0, left: 0, right: 0, bottom: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.8)',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          flexDirection: 'column',
-          zIndex: 9999,
-          color: '#fff',
-          textAlign: 'center',
-          padding: '30px'
-        }}>
-          <img src={logoAllianz} alt="Allianz Logo" style={{ maxWidth: '180px', marginBottom: '20px' }} />
-          <h2>Allianzers, muchas gracias por participar en el photocollage de la Semana de la Inclusión.</h2>
+      <div className="editor-container">
+        <div className="frame-container">
+          <img src={frame} alt="Frame" className="frame-img" />
+          {showCaptured ? (
+            <img src={showCaptured} alt="Captured" className="photo-preview" />
+          ) : (
+            <video ref={videoRef} className="video-feed" />
+          )}
+          <div className="message-overlay">{message}</div>
         </div>
-      )}
-    </div>
+
+        <input
+          type="text"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          className="message-input"
+          placeholder="Escribe tu mensaje aquí"
+        />
+
+        <div className="email-input">
+          <label htmlFor="personalEmail">Correo personal (opcional):</label>
+          <input
+            type="email"
+            id="personalEmail"
+            placeholder="tucorreo@gmail.com"
+            value={personalEmail}
+            onChange={(e) => setPersonalEmail(e.target.value)}
+          />
+        </div>
+
+        <div className="button-container">
+          {!streaming && !imageSrc && (
+            <button className="editor-button" onClick={startCamera}>
+              Activar Cámara
+            </button>
+          )}
+          {streaming && !capturedImage && cameraReady && (
+            <button className="editor-button" onClick={handleCapture}>
+              Tomar Foto
+            </button>
+          )}
+
+          {showCaptured && (
+            <>
+              <button className="editor-button" onClick={handleSend}>
+                Enviar
+              </button>
+              <button className="editor-button" onClick={handleRetry}>
+                Repetir
+              </button>
+            </>
+          )}
+        </div>
+
+        <footer className="footer">
+          <p>
+            <a href="https://www.allianz.co/seguridad-y-politica-de-datos/politicas-de-privacidad.html" target="_blank" rel="noopener noreferrer">
+              Política de privacidad
+            </a>
+            {' '}|{' '}
+            <a href="https://www.allianz.co/cookie-policy.html" target="_blank" rel="noopener noreferrer">
+              Política de cookies
+            </a>
+          </p>
+        </footer>
+
+        <canvas ref={canvasRef} style={{ display: 'none' }} />
+
+        {/* POPUP de agradecimiento */}
+        {showPopup && (
+          <div style={{
+            position: 'fixed',
+            top: 0, left: 0, right: 0, bottom: 0,
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column',
+            zIndex: 9999,
+            color: '#fff',
+            textAlign: 'center',
+            padding: '30px'
+          }}>
+            <img src={logoAllianz} alt="Allianz Logo" style={{ maxWidth: '180px', marginBottom: '20px' }} />
+            <h2>Allianzers, muchas gracias por participar en el photocollage de la Semana de la Inclusión.</h2>
+          </div>
+        )}
+      </div>
+      </div>
   );
 };
 
