@@ -44,6 +44,9 @@
   
   .video-feed,
   .photo-preview {
+    position: absolute; /* Asegura que se alinee con el frame */
+    top: 15%;
+    left: 10%;
     width: 80%;
     height: 70%;
     object-fit: cover;

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, use } from 'react';
 import { useNavigate } from 'react-router-dom';
 import emailjs from '@emailjs/browser';
 import './Editor.css';
@@ -7,10 +7,13 @@ import logoAllianz from '../assets/logo-allianz.png'; // 👈 Asegúrate de tene
 import logo1 from '../assets/logo-allianz.png';
 import logo2 from '../assets/logo2.png'; // tu segundo logo
 import './styles/Header.css';
+import { uploadPhoto } from '../services/upload';
+import html2canvas from 'html2canvas';
 
 const Editor = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
+  const containerRef = useRef(null);
   const [message, setMessage] = useState('');
   const [streaming, setStreaming] = useState(false);
   const [cameraReady, setCameraReady] = useState(false);
@@ -66,62 +69,53 @@ const Editor = () => {
   };
 
   const handleSend = async () => {
-    const canvas = canvasRef.current;
-    const context = canvas.getContext('2d');
-    const imgSrc = capturedImage || imageSrc;
 
-    if (imgSrc) {
-      const img = new Image();
-      img.onload = async () => {
-        canvas.width = img.width;
-        canvas.height = img.height;
+    if (!containerRef.current) return;
 
-        context.fillStyle = "white";
-        context.fillRect(0, 0, canvas.width, canvas.height);
-        context.drawImage(img, 0, 0, canvas.width, canvas.height);
+    const imgs = containerRef.current.querySelectorAll('img');
+        await Promise.all(Array.from(imgs).map(img => 
+        img.complete ? Promise.resolve() : new Promise(resolve => img.onload = resolve)
+    ));
 
-        context.font = "30px Arial";
-        context.fillStyle = "white";
-        context.textAlign = "center";
-        context.fillText(message, canvas.width / 2, canvas.height - 50);
+    const canvas = await html2canvas(containerRef.current, { useCORS: true });
 
-        const marco = new Image();
-        marco.src = frame;
-        marco.onload = async () => {
-          context.drawImage(marco, 0, 0, canvas.width, canvas.height);
-          const dataUrl = canvas.toDataURL('image/png');
+    const blob = await new Promise((resolve) => {
+      canvas.toBlob(resolve, 'image/png');
+    });
 
-          try {
-            await emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
-              to_email: personalEmail || 'sebascarreramoya@gmail.com',
-              final_photo: dataUrl,
-              message: message
-            }, 'YOUR_PUBLIC_KEY');
+    try {
+      await uploadPhoto(personalEmail, blob);
+      
+      // Mostrar popup de agradecimiento
+      setShowPopup(true);
 
-            console.log('Correo enviado');
+      setTimeout(() => {
+        setShowPopup(false);
+        navigate('/');
+      }, 5000);
+    } catch (error) {
+      console.error('Error al subir la foto:', error);
+      alert('Error al subir la foto.');
+    }
 
-            const collage = JSON.parse(localStorage.getItem('collageImages') || '[]');
-            collage.push({ dataUrl });
-            localStorage.setItem('collageImages', JSON.stringify(collage));
+    if (!personalEmail || personalEmail.trim() === '') {
+      return;
+    }
 
-            localStorage.removeItem('uploadedImage');
-            localStorage.removeItem('imageSource');
+    try {
+      const dataUrl = canvas.toDataURL('image/png');
 
-            // Mostrar popup de agradecimiento
-            setShowPopup(true);
+      await emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
+        to_email: personalEmail || 'sebascarreramoya@gmail.com',
+        final_photo: dataUrl,
+        message: message
+      }, 'YOUR_PUBLIC_KEY');
 
-            setTimeout(() => {
-              setShowPopup(false);
-              navigate('/');
-            }, 5000);
+      console.log('Correo enviado'); 
 
-          } catch (error) {
-            console.error('Error enviando email:', error);
-            alert('Error al enviar el correo.');
-          }
-        };
-      };
-      img.src = imgSrc;
+    } catch (error) {
+      console.error('Error enviando email:', error);
+      alert('Error al enviar el correo.');
     }
   };
 
@@ -132,8 +126,6 @@ const Editor = () => {
     if (streaming) startCamera();
   };
 
-  const showCaptured = capturedImage || imageSrc;
-
   return (
     <div className="home-static-bg">
       <div className="custom-header" onClick={() => navigate('/')}>
@@ -141,10 +133,10 @@ const Editor = () => {
        <img src={logo2} alt="Logo 2" className="custom-header-logo" />
       </div>
       <div className="editor-container">
-        <div className="frame-container">
+        <div className="frame-container" ref={containerRef}>
           <img src={frame} alt="Frame" className="frame-img" />
-          {showCaptured ? (
-            <img src={showCaptured} alt="Captured" className="photo-preview" />
+          {capturedImage ? (
+            <img src={capturedImage} alt="Captured" className="photo-preview" />
           ) : (
             <video ref={videoRef} className="video-feed" />
           )}
@@ -182,7 +174,7 @@ const Editor = () => {
             </button>
           )}
 
-          {showCaptured && (
+          {capturedImage && (
             <>
               <button className="editor-button" onClick={handleSend}>
                 Enviar
