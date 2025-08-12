@@ -2,7 +2,7 @@ import React from 'react'
 
 function Footer() {
   return (
-    <footer className="text-center text-sm text-gray-600 p-4 mt-8">
+    <footer className="text-center text-sm text-blue-600 p-4 mt-8">
       <a
         href="https://www.allianz.co/seguridad-y-politica-de-datos/politicas-de-privacidad.html"
         target="_blank"

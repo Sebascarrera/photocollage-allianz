@@ -16,7 +16,7 @@ function ImageEditor({ image }) {
 
     img.onload = () => {
       canvas.width = 600
-      canvas.height = 800
+      canvas.height = 750
 
       // Fondo blanco
       ctx.fillStyle = '#ffffff'
@@ -27,7 +27,7 @@ function ImageEditor({ image }) {
 
       // Cargar el marco encima
       marcoImg.onload = () => {
-        ctx.drawImage(marcoImg, 0, 0, 600, 800)
+        ctx.drawImage(marcoImg, 0, 0, 600, 750)
 
         // Texto del mensaje
         ctx.fillStyle = '#000'
@@ -35,7 +35,10 @@ function ImageEditor({ image }) {
         ctx.fillText('“Yo soy inclusión”', 50, 650)
 
         // Número ficticio
-        ctx.fillText('Participación Nº 001', 50, 690)
+        ctx.textAlign = "center"; // Centra horizontalmente el texto
+        ctx.textBaseline = "bottom"; // Alinea verticalmente por la parte inferior
+        ctx.fillText('Participación Nº 001', canvas.width / 2, canvas.height - 10);
+
       }
     }
   }, [image])

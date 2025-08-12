@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import emailjs from '@emailjs/browser';
 import './Editor.css';
 import frame from '../assets/Frame3.png';
-import logoAllianz from '../assets/logo-allianz.png'; // 👈 Asegúrate de tener este archivo
-import logo1 from '../assets/logo-allianz.png';
-import logo2 from '../assets/logo2.png'; // tu segundo logo
+import imgGracias from '../assets/img-gracias.png'; // 👈 Asegúrate de tener este archivo
+import logo1 from '../assets/logo-allianz-azul.png';
+import logo2 from '../assets/logo2-azul.png'; // tu segundo logo
 import './styles/Header.css';
 import { uploadPhoto } from '../services/upload';
 import html2canvas from 'html2canvas';
@@ -22,6 +22,13 @@ const Editor = () => {
   const [personalEmail, setPersonalEmail] = useState('');
   const [showPopup, setShowPopup] = useState(false); // 👈 nuevo estado
   const navigate = useNavigate();
+
+  const [userName, setUserName] = useState("");
+
+useEffect(() => {
+  const storedName = localStorage.getItem('userName') || "";
+  setUserName(storedName);
+}, []);
 
   useEffect(() => {
     const source = localStorage.getItem('imageSource');
@@ -105,10 +112,12 @@ const Editor = () => {
     try {
       const dataUrl = canvas.toDataURL('image/png');
 
+      await uploadPhoto(personalEmail, blob, userName); // si tu servicio lo admite
       await emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
         to_email: personalEmail || 'sebascarreramoya@gmail.com',
         final_photo: dataUrl,
-        message: message
+        message: message,
+        name: userName // 👈 aquí va el nombre
       }, 'YOUR_PUBLIC_KEY');
 
       console.log('Correo enviado'); 
@@ -215,8 +224,8 @@ const Editor = () => {
             textAlign: 'center',
             padding: '30px'
           }}>
-            <img src={logoAllianz} alt="Allianz Logo" style={{ maxWidth: '180px', marginBottom: '20px' }} />
-            <h2>Allianzers, muchas gracias por participar en el photocollage de la Semana de la Inclusión.</h2>
+            <img src={imgGracias} alt="Allianz Logo" style={{ maxWidth: '1080px', marginBottom: '20px' }} />
+            {/*<h2>Allianzers, muchas gracias por participar en el photocollage de la Semana de la Inclusión.</h2>*/}
           </div>
         )}
       </div>

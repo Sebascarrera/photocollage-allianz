@@ -7,8 +7,8 @@
     align-items: center;
     justify-content: center;
     background-color: rgba(7, 78, 159, 0.7);
-    padding-top: 40px;
-    padding-bottom: 60px; /* espacio para el footer */
+    padding-top: 60px;
+    padding-bottom: 40px; /* espacio para el footer */
     box-sizing: border-box;
   }
 
@@ -25,7 +25,7 @@
     position: relative;
     width: 100vw;
     max-width: 390px;
-    aspect-ratio: 3 / 4;
+    aspect-ratio: 3 / 3.7;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -56,11 +56,11 @@
 
   .message-overlay {
     position: absolute;
-    bottom: 25px;
+    bottom: 10px;
     width: 90%;
     text-align: center;
     color: #05397D;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: bold;
     z-index: 4;
     /* text-shadow: 2px 2px 5px rgba(0,0,0,0.6); */
@@ -102,15 +102,15 @@
     position: fixed;
     bottom: 0;
     width: 100%;
-    background: #111;
-    color: #ccc;
+    background: #ffffff;
+    color: #05397D;
     text-align: center;
-    padding: 0.5rem 0;
-    font-size: 0.85rem;
+    padding: 0.3rem;
+    font-size: 0.7rem;
   }
   
   .footer a {
-    color: #ccc;
+    color: #05397D;
     text-decoration: none;
   }
   
