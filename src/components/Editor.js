@@ -211,21 +211,8 @@ useEffect(() => {
 
         {/* POPUP de agradecimiento */}
         {showPopup && (
-          <div style={{
-            position: 'fixed',
-            top: 0, left: 0, right: 0, bottom: 0,
-            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            flexDirection: 'column',
-            zIndex: 9999,
-            color: '#fff',
-            textAlign: 'center',
-            padding: '30px'
-          }}>
-            <img src={imgGracias} alt="Allianz Logo" style={{ maxWidth: '1080px', marginBottom: '20px' }} />
-            {/*<h2>Allianzers, muchas gracias por participar en el photocollage de la Semana de la Inclusión.</h2>*/}
+          <div className="popup-overlay">
+            <img src={imgGracias} alt="Allianz Logo" className="popup-image" />
           </div>
         )}
       </div>

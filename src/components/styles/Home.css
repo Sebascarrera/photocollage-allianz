@@ -142,3 +142,93 @@
     transform: scale(1);
   }
 }
+
+/* Tamaño base (desktop) */
+:root {
+  --cell-size: calc(min(20vw, 20vh * 4 / 5));
+}
+
+/* Tablets en horizontal y laptops pequeñas */
+@media (max-width: 1024px) {
+  :root {
+    --cell-size: calc(min(15vw, 15vh * 4 / 5));
+  }
+
+  .home-content {
+    max-width: 450px;
+    padding: 2.5rem;
+  }
+
+  .home-title {
+    font-size: 1.6rem;
+  }
+}
+
+/* Tablets verticales y móviles grandes */
+@media (max-width: 768px) {
+  :root {
+    --cell-size: calc(min(12vw, 12vh * 4 / 5));
+  }
+
+  .home-content {
+    max-width: 400px;
+    padding: 2rem;
+  }
+
+  .home-title {
+    font-size: 1.4rem;
+  }
+
+  .home-buttons {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .home-buttons button {
+    width: 100%;
+  }
+}
+
+/* Móviles medianos */
+@media (max-width: 480px) {
+  :root {
+    --cell-size: calc(min(10vw, 10vh * 4 / 5));
+  }
+
+  .home-container {
+    padding: 0.5rem;
+    margin-right: 0;
+  }
+
+  .home-content {
+    max-width: 100%;
+    padding: 1.5rem;
+  }
+
+  .home-title {
+    font-size: 1.2rem;
+  }
+
+  .home-description {
+    font-size: 0.9rem;
+  }
+}
+
+/* Móviles pequeños tipo iPhone SE */
+@media (max-width: 360px) {
+  :root {
+    --cell-size: calc(min(8vw, 8vh * 4 / 5));
+  }
+
+  .home-content {
+    padding: 1rem;
+  }
+
+  .home-title {
+    font-size: 1rem;
+  }
+
+  .home-buttons {
+    gap: 0.6rem;
+  }
+}

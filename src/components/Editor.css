@@ -140,3 +140,156 @@
     padding-top: 0px;
     font-size: 14px;
   }
+
+
+  .popup-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 9999;
+    color: #fff;
+    text-align: center;
+    padding: 30px;
+  }
+  
+  .popup-image {
+    max-width: 1080px;
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+  }
+  
+
+
+  /* Tamaño base (desktop y tablets grandes) */
+.frame-container {
+  max-width: 390px;
+}
+
+/* Tablets en vertical y móviles grandes */
+@media (max-width: 768px) {
+  .frame-container {
+    max-width: 320px;
+  }
+
+  .message-overlay {
+    font-size: 1rem;
+  }
+
+  .editor-button {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+  }
+
+  .message-input,
+  .email-input input {
+    font-size: 14px;
+  }
+}
+
+/* Móviles medianos */
+@media (max-width: 480px) {
+  .editor-container {
+    padding-top: 40px;
+    padding-bottom: 30px;
+  }
+
+  .frame-container {
+    max-width: 280px;
+  }
+
+  .video-feed,
+  .photo-preview {
+    top: 14%;
+    left: 9%;
+    width: 82%;
+    height: 72%;
+  }
+
+  .message-overlay {
+    font-size: 0.9rem;
+  }
+
+  .message-input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+    max-width: 320px;
+    border-radius: 6px;
+    font-size: 16px;
+  }
+
+  .editor-button {
+    font-size: 0.85rem;
+    padding: 0.45rem 0.9rem;
+  }
+
+  .message-input,
+  .email-input input {
+    font-size: 13px;
+  }
+
+  .footer {
+    font-size: 0.65rem;
+    padding: 0.25rem;
+  }
+}
+
+/* Móviles pequeños tipo iPhone SE */
+@media (max-width: 360px) {
+  .frame-container {
+    max-width: 240px;
+  }
+
+  .video-feed,
+  .photo-preview {
+    top: 13%;
+    left: 8%;
+    width: 84%;
+    height: 74%;
+  }
+
+  .message-overlay {
+    font-size: 0.85rem;
+  }
+
+  .message-input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+    max-width: 300px;
+    border-radius: 6px;
+    font-size: 16px;
+  }
+
+  .editor-button {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .footer {
+    font-size: 0.6rem;
+  }
+}
+
+/* --- Mobile --- */
+@media (max-width: 768px) {
+  .popup-overlay {
+    padding: 15px;
+  }
+
+  .popup-image {
+    max-width: 90%;
+  }
+}
+
+/* --- Teléfonos pequeños (iPhone SE, etc.) --- */
+@media (max-width: 375px) {
+  .popup-image {
+    max-width: 100%;
+  }
+}

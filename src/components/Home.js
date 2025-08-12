@@ -136,7 +136,8 @@ function Home() {
               padding: '0.6rem',
               borderRadius: '0.5rem',
               border: '1px solid #ccc',
-              marginBottom: '1rem'
+              marginBottom: '1rem',
+              paddingRight: '0rem'
             }}
           />
           <label className="home-checkbox">
