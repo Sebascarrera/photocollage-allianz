@@ -7,9 +7,10 @@
     align-items: center;
     justify-content: center;
     background-color: rgba(7, 78, 159, 0.7);
-    padding-top: 60px;
-    padding-bottom: 40px; /* espacio para el footer */
+    padding-top: 80px;
+    padding-bottom: 60px; /* espacio para el footer */
     box-sizing: border-box;
+    overflow-y: auto;
   }
 
   .home-static-bg {
@@ -64,6 +65,18 @@
     font-weight: bold;
     z-index: 4;
     /* text-shadow: 2px 2px 5px rgba(0,0,0,0.6); */
+  }
+
+  .participation-number {
+    position: absolute;
+    bottom: 0px;
+    right: 2px;
+    text-align: center;
+    color: #000;
+    font-size: 6px;
+    font-weight: bold;
+    z-index: 4;
+    display: none;
   }
   
   .message-input {

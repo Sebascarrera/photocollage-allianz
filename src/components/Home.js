@@ -6,22 +6,9 @@ import logo1 from '../assets/logo-allianz-azul.png';
 import logo2 from '../assets/logo2-azul.png';
 import './styles/Header.css';
 
-import { initializeApp } from "firebase/app";
-import { getDatabase, ref, onChildAdded } from "firebase/database";
+import { ref, onChildAdded } from "firebase/database";
+import { db } from '../services/firebase';
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDnPdCa_Z7V5qxvnE8Mk_nsnVZHz_4UXbw",
-  authDomain: "collage-5507d.firebaseapp.com",
-  databaseURL: "https://collage-5507d-default-rtdb.firebaseio.com",
-  projectId: "collage-5507d",
-  storageBucket: "collage-5507d.firebasestorage.app",
-  messagingSenderId: "515067725517",
-  appId: "1:515067725517:web:6c8a1423d7af3860930b84",
-  measurementId: "G-NR7QPKVHPP"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
 
 function Home() {
   const [userName, setUserName] = useState("");
@@ -92,9 +79,8 @@ function Home() {
       const reader = new FileReader();
       reader.onloadend = () => {
         localStorage.setItem('userName', userName);
-        localStorage.setItem('uploadedImage', reader.result);
         localStorage.setItem('imageSource', 'file');
-        navigate('/editor');
+        navigate('/editor', { state: { fileData: reader.result } });
       };
       reader.readAsDataURL(file);
     }

@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect, use } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import emailjs from '@emailjs/browser';
 import './Editor.css';
 import frame from '../assets/Frame3.png';
@@ -9,6 +9,8 @@ import logo2 from '../assets/logo2-azul.png'; // tu segundo logo
 import './styles/Header.css';
 import { uploadPhoto } from '../services/upload';
 import html2canvas from 'html2canvas';
+import { onValue, ref } from 'firebase/database';
+import { db }  from '../services/firebase';
 
 const Editor = () => {
   const videoRef = useRef(null);
@@ -25,15 +27,29 @@ const Editor = () => {
 
   const [userName, setUserName] = useState("");
 
-useEffect(() => {
-  const storedName = localStorage.getItem('userName') || "";
-  setUserName(storedName);
-}, []);
+  const location = useLocation();
+  const fileData = location.state?.fileData;
+  const [participationNumber, setParticipationNumber] = useState('');
+
+  const participationNumberRef = useRef(null);
+
+  useEffect(() => {
+    const storedName = localStorage.getItem('userName') || "";
+    setUserName(storedName);
+
+    // obtener numero de participación, contando las fotos en la base de datos de firebase real-time
+    const photosRef = ref(db, "photos");
+    onValue(photosRef, (snapshot) => {
+      const photoCount = snapshot.size;
+      setParticipationNumber(`Participante Nº ${String(photoCount + 1).padStart(3, '0')}`);
+    });
+
+  }, []);
 
   useEffect(() => {
     const source = localStorage.getItem('imageSource');
     if (source === 'file') {
-      const uploaded = localStorage.getItem('uploadedImage');
+      const uploaded = fileData;
       if (uploaded) {
         setImageSrc(uploaded);
         setCapturedImage(uploaded);
@@ -84,11 +100,16 @@ useEffect(() => {
         img.complete ? Promise.resolve() : new Promise(resolve => img.onload = resolve)
     ));
 
+    // Temporalemente, quitar el display none de participationNumberRef
+    participationNumberRef.current.style.display = 'block';
+
     const canvas = await html2canvas(containerRef.current, { useCORS: true });
 
     const blob = await new Promise((resolve) => {
       canvas.toBlob(resolve, 'image/png');
     });
+
+    participationNumberRef.current.style.display = 'block';
 
     try {
       await uploadPhoto(personalEmail, blob);
@@ -130,8 +151,14 @@ useEffect(() => {
 
   const handleRetry = () => {
     setCapturedImage(null);
-    setImageSrc(null);
     setMessage('');
+
+    const source = localStorage.getItem('imageSource');
+    if (source === "file") {
+      // Si la imagen proviene de un archivo, no reiniciamos la cámara, volvemos a la pantalla de inicio
+      navigate('/');
+      return;
+    }
     if (streaming) startCamera();
   };
 
@@ -150,6 +177,9 @@ useEffect(() => {
             <video ref={videoRef} className="video-feed" />
           )}
           <div className="message-overlay">{message}</div>
+          <div className="participation-number" ref={participationNumberRef}>
+            <div>{participationNumber}</div>
+          </div>
         </div>
 
         <input
@@ -194,28 +224,27 @@ useEffect(() => {
             </>
           )}
         </div>
-
-        <footer className="footer">
-          <p>
-            <a href="https://www.allianz.co/seguridad-y-politica-de-datos/politicas-de-privacidad.html" target="_blank" rel="noopener noreferrer">
-              Política de privacidad
-            </a>
-            {' '}|{' '}
-            <a href="https://www.allianz.co/cookie-policy.html" target="_blank" rel="noopener noreferrer">
-              Política de cookies
-            </a>
-          </p>
-        </footer>
-
         <canvas ref={canvasRef} style={{ display: 'none' }} />
+      </div>
 
-        {/* POPUP de agradecimiento */}
+      <footer className="footer">
+        <p>
+          <a href="https://www.allianz.co/seguridad-y-politica-de-datos/politicas-de-privacidad.html" target="_blank" rel="noopener noreferrer">
+            Política de privacidad
+          </a>
+          {' '}|{' '}
+          <a href="https://www.allianz.co/cookie-policy.html" target="_blank" rel="noopener noreferrer">
+            Política de cookies
+          </a>
+        </p>
+      </footer>
+
+      {/* POPUP de agradecimiento */}
         {showPopup && (
           <div className="popup-overlay">
             <img src={imgGracias} alt="Allianz Logo" className="popup-image" />
           </div>
         )}
-      </div>
       </div>
   );
 };
