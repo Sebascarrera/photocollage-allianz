@@ -134,14 +134,13 @@ const Editor = () => {
       const dataUrl = canvas.toDataURL('image/png');
 
       await uploadPhoto(personalEmail, blob, userName); // si tu servicio lo admite
-      await emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', {
-        to_email: personalEmail || 'sebascarreramoya@gmail.com',
-        final_photo: dataUrl,
-        message: message,
+      await emailjs.send('service_id4vphb', 'template_gs26uzq', {
+        email: personalEmail,
+        image: dataUrl,
         name: userName // 👈 aquí va el nombre
-      }, 'YOUR_PUBLIC_KEY');
+      }, 'Aln0IHevlG2HrTWwB');
 
-      console.log('Correo enviado'); 
+      console.log('Correo enviado');
 
     } catch (error) {
       console.error('Error enviando email:', error);
