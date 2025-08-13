@@ -1,331 +1,193 @@
 .editor-container {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: rgba(7, 78, 159, 0.7);
-    padding-top: 80px;
-    padding-bottom: 60px; /* espacio para el footer */
-    box-sizing: border-box;
-    overflow-y: auto;
-  }
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(7, 78, 159, 0.7);
+  padding-top: 80px;
+  padding-bottom: 60px; /* espacio para el footer */
+  box-sizing: border-box;
+  overflow-y: auto;
+}
 
-  .home-static-bg {
-    position: absolute;
-    inset: 0;
-    background-image: url('/src/assets/imagen-fondo2.png');
-    background-size: cover;
-    background-position: center;
-    z-index: -2;
-  }
-  
-  .frame-container {
-    position: relative;
-    width: 100vw;
-    max-width: 390px;
-    aspect-ratio: 3 / 3.7;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 1rem;
-  }
-  
-  .frame-img { 
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    pointer-events: none;
-  }
-  
-  .video-feed,
-  .photo-preview {
-    position: absolute; /* Asegura que se alinee con el frame */
-    top: 15%;
-    left: 10%;
-    width: 80%;
-    height: 70%;
-    object-fit: cover;
-    z-index: 2;
-    border-radius: 8px;
-  }
+.home-static-bg {
+  position: absolute;
+  inset: 0;
+  background-image: url('/src/assets/imagen-fondo2.png');
+  background-size: cover;
+  background-position: center;
+  z-index: -2;
+}
 
-  .message-overlay {
-    position: absolute;
-    bottom: 27px;
-    width: 90%;
-    text-align: center;
-    color: #05397D;
-    font-size: 0.9rem;
-    font-weight: bold;
-    z-index: 4;
-    /* text-shadow: 2px 2px 5px rgba(0,0,0,0.6); */
-  }
-
-  .participation-number {
-    position: absolute;
-    bottom: 8px;               /* Lo subimos a la parte superior */
-    left: 50%;               /* Centramos horizontalmente */
-    transform: translateX(-50%); /* Ajuste para que el centro coincida */
-    text-align: center;
-    color: #ffffff;
-    font-size: 14px;         /* Un poco más grande para que se vea bien */
-    font-weight: bold;
-    z-index: 4;
-    display: none;           /* Si quieres mostrarlo, cámbialo a block */
-  }
-  
-  .message-input {
-    padding: 5px;
-    border: 1px solid #ccc;
-    width: 100%;
-    max-width: 380px;
-    border-radius: 6px;
-    font-size: 16px;
-  }
-  
-  .button-container {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  
-  .editor-button {
-    padding: 0.6rem 1.2rem;
-    font-size: 1rem;
-    background-color: #007aff;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-  
-  .editor-button:hover {
-    background-color: #005bb5;
-  }
-  
-  .footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background: #ffffff;
-    color: #05397D;
-    text-align: center;
-    padding: 0.3rem;
-    font-size: 0.7rem;
-  }
-  
-  .footer a {
-    color: #05397D;
-    text-decoration: none;
-  }
-  
-  .footer a:hover {
-    text-decoration: underline;
-  }
-  
-
-  .email-input {
-    margin-top: 10px;
-    margin-left: 0 auto;
-    max-width: 400px;
-  }
-  
-  .email-input input {
-    margin-left: -5px;
-    padding: 5px;
-    border: 1px solid #ccc;
-    width: 100%;
-    max-width: 400px;
-    border-radius: 6px;
-    font-size: 16px;
-  }
-
-  .email-input label{
-    color: white;
-    padding-top: 0px;
-    font-size: 14px;
-  }
-
-
-  .popup-overlay {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background-color: rgba(0, 0, 0, 0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    z-index: 9999;
-    color: #fff;
-    text-align: center;
-    padding: 30px;
-  }
-  
-  .popup-image {
-    max-width: 1080px;
-    width: 100%;
-    height: auto;
-    margin-bottom: 20px;
-  }
-  
-
-
-  /* Tamaño base (desktop y tablets grandes) */
 .frame-container {
+  position: relative;
+  width: 100vw;
   max-width: 390px;
+  aspect-ratio: 3 / 3.7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 
-/* Tablets en vertical y móviles grandes */
-@media (max-width: 768px) {
-  .frame-container {
-    max-width: 320px;
-  }
-
-  .message-overlay {
-    font-size: 1rem;
-  }
-
-  .editor-button {
-    font-size: 0.9rem;
-    padding: 0.5rem 1rem;
-  }
-
-  .message-input,
-  .email-input input {
-    font-size: 14px;
-  }
+.frame-img { 
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  pointer-events: none;
 }
 
-/* Móviles medianos */
-@media (max-width: 480px) {
-  .editor-container {
-    padding-top: 40px;
-    padding-bottom: 30px;
-  }
-
-  .frame-container {
-    max-width: 280px;
-  }
-
-  .video-feed,
-  .photo-preview {
-    top: 14%;
-    left: 9%;
-    width: 82%;
-    height: 72%;
-  }
-
-  .message-overlay {
-    font-size: 0.9rem;
-  }
-
-  .message-input {
-    padding: 5px;
-    border: 1px solid #ccc;
-    width: 100%;
-    max-width: 320px;
-    border-radius: 6px;
-    font-size: 16px;
-  }
-
-  .editor-button {
-    font-size: 0.85rem;
-    padding: 0.45rem 0.9rem;
-  }
-
-  .message-input,
-  .email-input input {
-    font-size: 13px;
-  }
-
-  .footer {
-    font-size: 0.65rem;
-    padding: 0.25rem;
-    height: var(--footer-height);
-  }
+.video-feed,
+.photo-preview {
+  position: absolute;
+  top: 15%;
+  left: 10%;
+  width: 80%;
+  height: 70%;
+  object-fit: cover;
+  z-index: 2;
+  border-radius: 8px;
 }
 
-/* Móviles pequeños tipo iPhone SE */
-@media (max-width: 360px) {
-  .frame-container {
-    max-width: 240px;
-  }
-
-  .video-feed,
-  .photo-preview {
-    top: 13%;
-    left: 8%;
-    width: 84%;
-    height: 74%;
-  }
-
-  .message-overlay {
-    font-size: 0.85rem;
-  }
-
-  .message-input {
-    padding: 5px;
-    border: 1px solid #ccc;
-    width: 100%;
-    max-width: 300px;
-    border-radius: 6px;
-    font-size: 16px;
-  }
-
-  .editor-button {
-    font-size: 0.8rem;
-    padding: 0.4rem 0.8rem;
-  }
-
-  .footer {
-    font-size: 0.6rem;
-  }
+.message-overlay {
+  position: absolute;
+  bottom: 27px;
+  width: 90%;
+  text-align: center;
+  color: #05397D;
+  font-size: 0.9rem;
+  font-weight: bold;
+  z-index: 4;
 }
 
-/* --- Mobile --- */
-@media (max-width: 768px) {
-  .popup-overlay {
-    padding: 15px;
-  }
-
-  .popup-image {
-    max-width: 90%;
-  }
+.participation-number {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: bold;
+  z-index: 4;
+  display: none;
 }
 
-/* --- Teléfonos pequeños (iPhone SE, etc.) --- */
-@media (max-width: 375px) {
-  .popup-image {
-    max-width: 100%;
-  }
+.message-input {
+  padding: 5px;
+  border: 1px solid #ccc;
+  width: 100%;
+  max-width: 380px;
+  border-radius: 6px;
+  font-size: 16px;
+}
 
-  /* Botón circular superpuesto para móviles y desktop */
+.button-container {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.editor-button {
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  background-color: #007aff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.editor-button:hover {
+  background-color: #005bb5;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #ffffff;
+  color: #05397D;
+  text-align: center;
+  padding: 0.3rem;
+  font-size: 0.7rem;
+}
+
+.footer a {
+  color: #05397D;
+  text-decoration: none;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+.email-input {
+  margin-top: 10px;
+  max-width: 400px;
+}
+
+.email-input input {
+  padding: 5px;
+  border: 1px solid #ccc;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.email-input label {
+  color: white;
+  font-size: 14px;
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 9999;
+  color: #fff;
+  text-align: center;
+  padding: 30px;
+}
+
+.popup-image {
+  max-width: 1080px;
+  width: 100%;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+/* --- Botón de captura centrado en móviles --- */
 .capture-button {
   position: absolute;
-  bottom: 18px;           /* justo sobre el borde del frame */
+  bottom: 18px;
   left: 50%;
   transform: translateX(-50%);
   width: 70px;
   height: 70px;
   border-radius: 50%;
-  border-block-color: #d0d0d0;
-  background: white;    /* rojo tipo iOS */
+  background: #007aff;
   color: #fff;
-  font-size: 1.3rem;
+  font-size: 0.7rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 5;             /* por encima del video y overlays */
-  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+  z-index: 5;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
   cursor: pointer;
   touch-action: manipulation;
 }
@@ -334,60 +196,35 @@
   transform: translateX(-50%) scale(0.98);
 }
 
-/* Ajustes responsivos */
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+  .frame-container { max-width: 320px; }
+  .message-overlay { font-size: 1rem; }
+  .editor-button { font-size: 0.9rem; padding: 0.5rem 1rem; }
+  .message-input, .email-input input { font-size: 14px; }
+  .popup-overlay { padding: 15px; }
+  .popup-image { max-width: 90%; }
+}
+
 @media (max-width: 480px) {
-  .capture-button {
-    width: 68px;
-    height: 68px;
-    bottom: 14px;
-    font-size: 1.2rem;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    border-radius: 50%;
-    border-block-color: #d0d0d0;
-    background: white;    /* rojo tipo iOS */
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 5;             /* por encima del video y overlays */
-    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-    cursor: pointer;
-    touch-action: manipulation;
-    }
-
-    .capture-button:active {
-      transform: translateX(-50%) scale(0.98);
-    }
-  
+  .editor-container { padding-top: 40px; padding-bottom: 30px; }
+  .frame-container { max-width: 280px; }
+  .video-feed, .photo-preview { top: 14%; left: 9%; width: 82%; height: 72%; }
+  .message-overlay { font-size: 0.9rem; }
+  .message-input { max-width: 320px; font-size: 16px; }
+  .editor-button { font-size: 0.85rem; padding: 0.45rem 0.9rem; }
+  .message-input, .email-input input { font-size: 13px; }
+  .footer { font-size: 0.65rem; padding: 0.25rem; }
+  .capture-button { width: 68px; height: 68px; bottom: 14px; font-size: 1.2rem; }
 }
 
-@media (max-width: 360px) {
-  .capture-button {
-    width: 62px;
-    height: 62px;
-    bottom: 12px;
-    font-size: 1.1rem;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    border-radius: 50%;
-    border-block-color: #d0d0d0;
-    background: white;    /* rojo tipo iOS */
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 5;             /* por encima del video y overlays */
-    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-    cursor: pointer;
-    touch-action: manipulation;
-  }
-
-  .capture-button:active {
-    transform: translateX(-50%) scale(0.98);
-  }
-}
-
+@media (max-width: 375px) {
+  .frame-container { max-width: 240px; }
+  .video-feed, .photo-preview { top: 13%; left: 8%; width: 84%; height: 74%; }
+  .message-overlay { font-size: 0.85rem; }
+  .message-input { max-width: 300px; font-size: 16px; }
+  .editor-button { font-size: 0.8rem; padding: 0.4rem 0.8rem; }
+  .footer { font-size: 0.6rem; }
+  .popup-image { max-width: 100%; }
+  .capture-button { width: 62px; height: 62px; bottom: 12px; font-size: 1.1rem; }
 }

@@ -198,7 +198,7 @@ const Editor = () => {
               aria-label="Tomar foto"
               title="Tomar foto"
             >
-              📸
+              Tomar foto
             </button>
           )}
         </div>
