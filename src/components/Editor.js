@@ -9,7 +9,7 @@ import logo2 from '../assets/logo2-azul.png';
 import './styles/Header.css';
 import { uploadPhoto } from '../services/upload';
 import html2canvas from 'html2canvas';
-import { onValue, ref } from 'firebase/database';
+import { onValue, ref, set } from 'firebase/database';
 import { db }  from '../services/firebase';
 
 const Editor = () => {
@@ -28,6 +28,7 @@ const Editor = () => {
 
   const [userName, setUserName] = useState("");
   const [participationNumber, setParticipationNumber] = useState('');
+  const [showLoader, setShowLoader] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -113,11 +114,13 @@ const Editor = () => {
     participationNumberRef.current.style.display = 'block';
 
     try {
+      setShowLoader(true);
       await uploadPhoto(personalEmail, blob);
+      setShowLoader(false);
       setShowPopup(true);
       setTimeout(() => {
         setShowPopup(false);
-        navigate('/');
+        // navigate('/');
       }, 5000);
     } catch (error) {
       console.error('Error al subir la foto:', error);
@@ -131,7 +134,6 @@ const Editor = () => {
     try {
       const dataUrl = canvas.toDataURL('image/png');
 
-      await uploadPhoto(personalEmail, blob, userName); // si tu servicio lo admite
       await emailjs.send('service_id4vphb', 'template_gs26uzq', {
         email: personalEmail,
         image: dataUrl,
@@ -188,19 +190,6 @@ const Editor = () => {
           <div className="participation-number" ref={participationNumberRef}>
             <div>{participationNumber}</div>
           </div>
-
-          {/* 👇 Botón circular superpuesto (visible cuando hay cámara y no hay foto) */}
-          {streaming && !capturedImage && cameraReady && (
-            <button
-              type="button"
-              className="capture-button"
-              onClick={handleCapture}
-              aria-label="Tomar foto"
-              title="Tomar foto"
-            >
-              Tomar foto
-            </button>
-          )}
         </div>
 
         <input
@@ -267,6 +256,12 @@ const Editor = () => {
       {showPopup && (
         <div className="popup-overlay">
           <img src={imgGracias} alt="Allianz Logo" className="popup-image" />
+        </div>
+      )}
+
+      { showLoader && (
+        <div className="loader-overlay">
+          <div className="loader"></div>
         </div>
       )}
     </div>
