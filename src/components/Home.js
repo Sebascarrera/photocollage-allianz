@@ -32,38 +32,24 @@ function Home() {
     if (!container) return;
 
     const computeLayout = () => {
-      const n = Math.max(1, collageImages.length);
-      const rect = container.getBoundingClientRect();
-      const W = rect.width || window.innerWidth;
-      const H = rect.height || window.innerHeight;
-      const R = W / H || 1;
-
-      // fórmula para columnas: aproxima distribución "cuadrada" teniendo en cuenta el aspecto del contenedor
-      let cols = Math.max(1, Math.round(Math.sqrt(n * R)));
-      if (cols > n) cols = n;
-
-      const rows = Math.max(1, Math.ceil(n / cols));
-      const gapPx = 4; // gap en px (ajústalo si quieres)
-
-      container.style.setProperty('--cols', cols.toString());
-      container.style.setProperty('--rows', rows.toString());
-      container.style.setProperty('--gap', `${gapPx}px`);
+      // Leemos las variables CSS definidas en :root
+      const rootStyles = getComputedStyle(document.documentElement);
+      const cellSize = parseFloat(rootStyles.getPropertyValue('--cell-size')); // px
+      const gapSize = parseFloat(rootStyles.getPropertyValue('--gap-size')); // px
+      const headerHeight = parseFloat(rootStyles.getPropertyValue('--header-height')); // px
+      const footerHeight = parseFloat(rootStyles.getPropertyValue('--footer-height')); // px
+    
+      // Calculamos el espacio disponible quitando header y footer
+      const availableWidth = window.innerWidth;
+      const availableHeight = window.innerHeight - headerHeight - footerHeight;
+    
+      // Columnas y filas disponibles
+      const cols = Math.floor((availableWidth + gapSize) / (cellSize + gapSize));
+      const rows = Math.floor((availableHeight + gapSize) / (cellSize * 5 / 4 + gapSize));
+    
+      return { cols, rows };
     };
-
-    // recalcular cuando cambien imágenes y cuando cambie el tamaño de la ventana
-    const t = setTimeout(computeLayout, 40);
-    window.addEventListener('resize', computeLayout);
-
-    // si hay imágenes nuevas, queremos recomputar después de que carguen
-    const imgs = Array.from(container.querySelectorAll('img'));
-    imgs.forEach(img => {
-      if (!img.complete) img.onload = computeLayout;
-    });
-
-    return () => {
-      clearTimeout(t);
-      window.removeEventListener('resize', computeLayout);
-    };
+    
   }, [collageImages]);
 
   const handleTakePhoto = () => {

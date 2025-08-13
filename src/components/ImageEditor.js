@@ -32,7 +32,7 @@ function ImageEditor({ image }) {
         // Texto del mensaje
         ctx.fillStyle = '#000'
         ctx.font = '20px sans-serif'
-        ctx.fillText('“Yo soy inclusión”', 50, 650)
+        ctx.fillText('“Yo soy inclusión”', 100, 600)
 
         // Número ficticio
         ctx.textAlign = "center"; // Centra horizontalmente el texto
