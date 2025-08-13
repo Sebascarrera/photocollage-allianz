@@ -120,7 +120,7 @@ const Editor = () => {
       setShowPopup(true);
       setTimeout(() => {
         setShowPopup(false);
-        // navigate('/');
+        navigate('/');
       }, 5000);
     } catch (error) {
       console.error('Error al subir la foto:', error);
