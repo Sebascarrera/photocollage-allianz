@@ -307,4 +307,87 @@
   .popup-image {
     max-width: 100%;
   }
+
+  /* Botón circular superpuesto para móviles y desktop */
+.capture-button {
+  position: absolute;
+  bottom: 18px;           /* justo sobre el borde del frame */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border-block-color: #d0d0d0;
+  background: white;    /* rojo tipo iOS */
+  color: #fff;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;             /* por encima del video y overlays */
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.capture-button:active {
+  transform: translateX(-50%) scale(0.98);
+}
+
+/* Ajustes responsivos */
+@media (max-width: 480px) {
+  .capture-button {
+    width: 68px;
+    height: 68px;
+    bottom: 14px;
+    font-size: 1.2rem;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    border-block-color: #d0d0d0;
+    background: white;    /* rojo tipo iOS */
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;             /* por encima del video y overlays */
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    cursor: pointer;
+    touch-action: manipulation;
+    }
+
+    .capture-button:active {
+      transform: translateX(-50%) scale(0.98);
+    }
+  
+}
+
+@media (max-width: 360px) {
+  .capture-button {
+    width: 62px;
+    height: 62px;
+    bottom: 12px;
+    font-size: 1.1rem;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    border-block-color: #d0d0d0;
+    background: white;    /* rojo tipo iOS */
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5;             /* por encima del video y overlays */
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  .capture-button:active {
+    transform: translateX(-50%) scale(0.98);
+  }
+}
+
 }

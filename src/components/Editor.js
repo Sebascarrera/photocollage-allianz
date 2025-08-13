@@ -1,11 +1,11 @@
-import React, { useRef, useState, useEffect, use } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import emailjs from '@emailjs/browser';
 import './Editor.css';
 import frame from '../assets/Frame3.png';
-import imgGracias from '../assets/img-gracias.png'; // 👈 Asegúrate de tener este archivo
+import imgGracias from '../assets/img-gracias.png';
 import logo1 from '../assets/logo-allianz-azul.png';
-import logo2 from '../assets/logo2-azul.png'; // tu segundo logo
+import logo2 from '../assets/logo2-azul.png';
 import './styles/Header.css';
 import { uploadPhoto } from '../services/upload';
 import html2canvas from 'html2canvas';
@@ -16,34 +16,33 @@ const Editor = () => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const containerRef = useRef(null);
+  const participationNumberRef = useRef(null);
+
   const [message, setMessage] = useState('');
   const [streaming, setStreaming] = useState(false);
   const [cameraReady, setCameraReady] = useState(false);
   const [capturedImage, setCapturedImage] = useState(null);
   const [imageSrc, setImageSrc] = useState(null);
   const [personalEmail, setPersonalEmail] = useState('');
-  const [showPopup, setShowPopup] = useState(false); // 👈 nuevo estado
-  const navigate = useNavigate();
+  const [showPopup, setShowPopup] = useState(false);
 
   const [userName, setUserName] = useState("");
-
-  const location = useLocation();
-  const fileData = location.state?.fileData;
   const [participationNumber, setParticipationNumber] = useState('');
 
-  const participationNumberRef = useRef(null);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const fileData = location.state?.fileData;
 
   useEffect(() => {
     const storedName = localStorage.getItem('userName') || "";
     setUserName(storedName);
 
-    // obtener numero de participación, contando las fotos en la base de datos de firebase real-time
     const photosRef = ref(db, "photos");
     onValue(photosRef, (snapshot) => {
       const photoCount = snapshot.size;
+      // ✅ corregido: usar template string
       setParticipationNumber(`Participante Nº ${String(photoCount + 1).padStart(3, '0')}`);
     });
-
   }, []);
 
   useEffect(() => {
@@ -55,68 +54,67 @@ const Editor = () => {
         setCapturedImage(uploaded);
       }
     }
-  }, []);
+  }, [fileData]);
 
-  const startCamera = () => {
-    navigator.mediaDevices
-      .getUserMedia({ video: true })
-      .then((stream) => {
+  const startCamera = async () => {
+    try {
+      setCameraReady(false);
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        videoRef.current.play();
-        setStreaming(true);
-        setCameraReady(true);
-        setCapturedImage(null);
-      })
-      .catch((err) => {
-        console.error("Error al acceder a la cámara:", err);
-      });
+        // iOS: activar cuando meta-datos estén listos
+        videoRef.current.onloadedmetadata = () => {
+          setCameraReady(true);
+          videoRef.current.play().catch(() => {});
+        };
+      }
+      setStreaming(true);
+      setCapturedImage(null);
+    } catch (err) {
+      console.error("Error al acceder a la cámara:", err);
+      alert("No pudimos acceder a la cámara. Revisa permisos del navegador.");
+    }
   };
 
   useEffect(() => {
     return () => {
-      if (videoRef.current && videoRef.current.srcObject) {
-        videoRef.current.srcObject.getTracks().forEach(track => track.stop());
-      }
+      const stream = videoRef.current?.srcObject;
+      if (stream) stream.getTracks().forEach(t => t.stop());
     };
   }, []);
 
   const handleCapture = () => {
-    const context = canvasRef.current.getContext('2d');
+    if (!cameraReady || !videoRef.current) return;
     const video = videoRef.current;
+    const ctx = canvasRef.current.getContext('2d');
 
-    canvasRef.current.width = video.videoWidth;
-    canvasRef.current.height = video.videoHeight;
-    context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+    canvasRef.current.width = video.videoWidth || 1080;
+    canvasRef.current.height = video.videoHeight || 1920;
+    ctx.drawImage(video, 0, 0, canvasRef.current.width, canvasRef.current.height);
+
     const dataUrl = canvasRef.current.toDataURL('image/png');
     setCapturedImage(dataUrl);
   };
 
   const handleSend = async () => {
-
     if (!containerRef.current) return;
 
     const imgs = containerRef.current.querySelectorAll('img');
-        await Promise.all(Array.from(imgs).map(img => 
-        img.complete ? Promise.resolve() : new Promise(resolve => img.onload = resolve)
+    await Promise.all(Array.from(imgs).map(img =>
+      img.complete ? Promise.resolve() : new Promise(res => (img.onload = res))
     ));
 
-    // Temporalemente, quitar el display none de participationNumberRef
+    // mostrar número para que quede en el render del canvas
     participationNumberRef.current.style.display = 'block';
 
     const canvas = await html2canvas(containerRef.current, { useCORS: true });
-
-    const blob = await new Promise((resolve) => {
-      canvas.toBlob(resolve, 'image/png');
-    });
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, 'image/png'));
 
     participationNumberRef.current.style.display = 'block';
 
     try {
       await uploadPhoto(personalEmail, blob);
-      
-      // Mostrar popup de agradecimiento
       setShowPopup(true);
-
       setTimeout(() => {
         setShowPopup(false);
         navigate('/');
@@ -151,10 +149,8 @@ const Editor = () => {
   const handleRetry = () => {
     setCapturedImage(null);
     setMessage('');
-
     const source = localStorage.getItem('imageSource');
     if (source === "file") {
-      // Si la imagen proviene de un archivo, no reiniciamos la cámara, volvemos a la pantalla de inicio
       navigate('/');
       return;
     }
@@ -164,21 +160,47 @@ const Editor = () => {
   return (
     <div className="home-static-bg">
       <div className="custom-header" onClick={() => navigate('/')}>
-       <img src={logo1} alt="Logo 1" className="custom-header-logo" />
-       <img src={logo2} alt="Logo 2" className="custom-header-logo" />
+        <img src={logo1} alt="Logo 1" className="custom-header-logo" />
+        <img src={logo2} alt="Logo 2" className="custom-header-logo" />
       </div>
+
       <div className="editor-container">
         <div className="frame-container" ref={containerRef}>
           <img src={frame} alt="Frame" className="frame-img" />
+
           {capturedImage ? (
             <img src={capturedImage} alt="Captured" className="photo-preview" />
           ) : (
-            <video ref={videoRef} className="video-feed" />
+            // 👇 playsInline+muted evita fullscreen en iOS y permite botones superpuestos
+            <video
+              ref={videoRef}
+              className="video-feed"
+              autoPlay
+              playsInline
+              muted
+            />
           )}
+
+          {/* Texto sobre la foto */}
           <div className="message-overlay">{message}</div>
+
+          {/* Número de participación */}
           <div className="participation-number" ref={participationNumberRef}>
             <div>{participationNumber}</div>
           </div>
+
+          {/* 👇 Botón circular superpuesto (visible cuando hay cámara y no hay foto) */}
+          {streaming && !capturedImage && cameraReady && (
+            <button
+              type="button"
+              className="capture-button"
+              onClick={handleCapture}
+              aria-label="Tomar foto"
+              title="Tomar foto"
+            >
+              📸
+            </button>
+          )}
         </div>
 
         <input
@@ -206,6 +228,8 @@ const Editor = () => {
               Activar Cámara
             </button>
           )}
+
+          {/* Botón textual de respaldo (se mantiene) */}
           {streaming && !capturedImage && cameraReady && (
             <button className="editor-button" onClick={handleCapture}>
               Tomar Foto
@@ -223,6 +247,7 @@ const Editor = () => {
             </>
           )}
         </div>
+
         <canvas ref={canvasRef} style={{ display: 'none' }} />
       </div>
 
@@ -239,12 +264,12 @@ const Editor = () => {
       </footer>
 
       {/* POPUP de agradecimiento */}
-        {showPopup && (
-          <div className="popup-overlay">
-            <img src={imgGracias} alt="Allianz Logo" className="popup-image" />
-          </div>
-        )}
-      </div>
+      {showPopup && (
+        <div className="popup-overlay">
+          <img src={imgGracias} alt="Allianz Logo" className="popup-image" />
+        </div>
+      )}
+    </div>
   );
 };
 
