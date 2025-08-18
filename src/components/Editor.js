@@ -204,8 +204,8 @@ const Editor = () => {
           placeholder="Escribe dos o tres características que te representen"
         />
 
-        {/*<div className="email-input">
-          <label htmlFor="personalEmail">Correo personal (opcional):</label>
+        <div className="email-input">
+          <label htmlFor="personalEmail">Correo electrónico:</label>
           <input
             type="email"
             id="personalEmail"
@@ -213,7 +213,7 @@ const Editor = () => {
             value={personalEmail}
             onChange={(e) => setPersonalEmail(e.target.value)}
           />
-        </div>*/}
+        </div>
 
         <div className="button-container">
           {!streaming && !imageSrc && (
