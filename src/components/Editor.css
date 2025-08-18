@@ -55,25 +55,56 @@
   border-radius: 8px;
 }
 
+.username-overlay {
+  position: absolute;
+  top: 28px;               
+  left: 50%;               
+  transform: translateX(-50%); 
+  width: 90%;              
+  font-size: 1.2rem;       
+  font-weight: bold;
+  text-align: center;      
+  color: #05397D;
+  z-index: 9999;           
+  pointer-events: none;
+
+  white-space: normal;        /* permite salto de línea */
+  word-break: break-word;     /* fuerza corte si el nombre es muy largo */
+  overflow-wrap: break-word;  /* soporte adicional */
+}
+
 .message-overlay {
   position: absolute;
-  bottom: 27px;
+  bottom: 10px;         /* Ubicación respecto al marco */
+  left: 50%;
+  transform: translateX(-50%);
   width: 90%;
+  height: 60px;         /* Altura fija del área del mensaje (ajústala según tu diseño) */
+  display: flex;
+  justify-content: center; /* Centrado horizontal */
+  align-items: center;     /* Centrado vertical */
   text-align: center;
   color: #05397D;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: bold;
   z-index: 4;
+  overflow: hidden;        /* Para que no se desborde */
+}
+
+/* El texto puede ocupar varias líneas */
+.message-overlay p {
+  margin: 0;
+  line-height: 1.2;
+  word-wrap: break-word;
 }
 
 .participation-number {
   position: absolute;
   bottom: 8px;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
+  right: 8px;
+  text-align: right;
   color: #ffffff;
-  font-size: 14px;
+  font-size: 0.5rem;
   font-weight: bold;
   z-index: 4;
   display: none;
@@ -204,6 +235,11 @@
   .message-input, .email-input input { font-size: 14px; }
   .popup-overlay { padding: 15px; }
   .popup-image { max-width: 90%; }
+  .username-overlay {
+    top: 22px;
+    width: 92%;
+    font-size: 1rem;         
+  }
 }
 
 @media (max-width: 480px) {
@@ -216,6 +252,15 @@
   .message-input, .email-input input { font-size: 13px; }
   .footer { font-size: 0.65rem; padding: 0.25rem; }
   .capture-button { width: 68px; height: 68px; bottom: 14px; font-size: 1.2rem; }
+  .username-overlay {
+    top: 18px;               /* menos margen superior */
+    width: 95%;              /* más ancho disponible */
+    font-size: 0.9rem;       /* texto más pequeño */
+  }
+  .message-overlay {
+    height: 37px;       /* Un poco más bajo */
+    font-size: 0.85rem; /* Texto más pequeño */
+  }
 }
 
 @media (max-width: 375px) {
@@ -227,6 +272,15 @@
   .footer { font-size: 0.6rem; }
   .popup-image { max-width: 100%; }
   .capture-button { width: 62px; height: 62px; bottom: 12px; font-size: 1.1rem; }
+  .username-overlay {
+    top: 3px;
+    font-size: 0.8rem;
+    width: 88%;
+  }
+  .message-overlay {
+    height: 25px;       /* Ajuste de espacio */
+    font-size: 0.70rem; /* Texto más compacto */
+  }
 }
 
 .loader-overlay {

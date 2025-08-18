@@ -24,27 +24,31 @@
   
   .home-background {
     position: absolute;
-    top: var(--header-height); /* empieza después del header */
-    bottom: var(--footer-height); /* termina antes del footer */
+    top: var(--header-height);
+    bottom: var(--footer-height);
     left: 0;
     right: 0;
     z-index: 0;
+
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(var(--cell-size), 1fr));
-    /* sumamos el gap en la altura para que no se monten */
-    grid-auto-rows: calc(var(--cell-size) * 5.5 / 4 + var(--gap-size));
+    grid-auto-rows: calc(var(--cell-size) * 5.1 / 4 + var(--gap-size));
     gap: var(--gap-size);
+
     padding: 0;
     margin: 0;
     width: 100%;
     height: calc(100vh - var(--header-height) - var(--footer-height));
-  }
+
+    overflow-y: auto;   /* 👈 Scroll solo dentro del grid */
+    overflow-x: hidden; /* 👈 Evitar scroll horizontal */
+}
   
   :root {
-    --cell-size: calc(min(20vw, 20vh * 4 / 5));
+    --cell-size: calc(min(40vw, 40vh * 4 / 5));
     --gap-size: 2px; /* mismo que gap en .home-background */
-    --header-height: 80px; /* ajusta según tu header real */
-    --footer-height: 40px; /* ajusta según tu footer real */
+    --header-height: 50px; /* ajusta según tu header real */
+    --footer-height: 30px; /* ajusta según tu footer real */
   }
   
   .home-background img {
@@ -58,7 +62,7 @@
   
   /* Calcula el tamaño de celda proporcional al viewport */
   :root {
-    --cell-size: calc(min(20vw, 20vh * 4 / 5));
+    --cell-size: calc(min(30vw, 30vh * 4 / 5));
   }
   
   
@@ -157,13 +161,13 @@
 
 /* Tamaño base (desktop) */
 :root {
-  --cell-size: calc(min(20vw, 20vh * 4 / 5));
+  --cell-size: calc(min(30vw, 30vh * 4 / 5));
 }
 
 /* Tablets en horizontal y laptops pequeñas */
 @media (max-width: 1024px) {
   :root {
-    --cell-size: calc(min(15vw, 15vh * 4 / 5));
+    --cell-size: calc(min(20vw, 20vh * 4 / 5));
   }
 
   .home-content {
@@ -177,7 +181,7 @@
 
   .home-background {
     /* sumamos el gap en la altura para que no se monten */
-    grid-auto-rows: calc(var(--cell-size) * 5.4 / 4 + var(--gap-size));
+    grid-auto-rows: calc(var(--cell-size) * 6.2 / 4 + var(--gap-size));
   }
 }
 
@@ -214,7 +218,7 @@
 /* Móviles medianos */
 @media (max-width: 480px) {
   :root {
-    --cell-size: calc(min(10vw, 10vh * 4 / 5));
+    --cell-size: calc(min(17vw, 17vh * 4 / 5));
   }
 
   .home-container {
@@ -237,14 +241,14 @@
 
   .home-background {
     /* sumamos el gap en la altura para que no se monten */
-    grid-auto-rows: calc(var(--cell-size) * 5.2 / 4 + var(--gap-size));
+    grid-auto-rows: calc(var(--cell-size) * 5.7 / 4 + var(--gap-size));
   }
 }
 
 /* Móviles pequeños tipo iPhone SE */
 @media (max-width: 360px) {
   :root {
-    --cell-size: calc(min(8vw, 8vh * 4 / 5));
+    --cell-size: calc(min(12vw, 12vh * 4 / 5));
   }
 
   .home-content {
@@ -261,6 +265,6 @@
 
   .home-background {
     /* sumamos el gap en la altura para que no se monten */
-    grid-auto-rows: calc(var(--cell-size) * 5.1 / 4 + var(--gap-size));
+    grid-auto-rows: calc(var(--cell-size) * 5.2 / 4 + var(--gap-size));
   }
 }

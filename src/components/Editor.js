@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import emailjs from '@emailjs/browser';
 import './Editor.css';
-import frame from '../assets/Frame3.png';
+import frame from '../assets/frame6.png';
 import imgGracias from '../assets/img-gracias.png';
 import logo1 from '../assets/logo-allianz-azul.png';
 import logo2 from '../assets/logo2-azul.png';
@@ -183,6 +183,9 @@ const Editor = () => {
             />
           )}
 
+          {/* Nombre del usuario sobre todo */}
+          <div className="username-overlay">{userName}</div>
+
           {/* Texto sobre la foto */}
           <div className="message-overlay">{message}</div>
 
@@ -193,14 +196,15 @@ const Editor = () => {
         </div>
 
         <input
+          maxLength={108}
           type="text"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           className="message-input"
-          placeholder="Escribe tu mensaje aquí"
+          placeholder="Escribe dos o tres características que te representen"
         />
 
-        <div className="email-input">
+        {/*<div className="email-input">
           <label htmlFor="personalEmail">Correo personal (opcional):</label>
           <input
             type="email"
@@ -209,7 +213,7 @@ const Editor = () => {
             value={personalEmail}
             onChange={(e) => setPersonalEmail(e.target.value)}
           />
-        </div>
+        </div>*/}
 
         <div className="button-container">
           {!streaming && !imageSrc && (

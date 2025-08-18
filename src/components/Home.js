@@ -93,16 +93,16 @@ function Home() {
         </div>
 
         <div className="home-content">
-          <h1 className="home-title">Semana de la Inclusión Allianz</h1>
+          <h1 className="home-title">{/*Semana de la Inclusión Allianz.*/} Mural Allianz — ¡Esto es lo que somos!</h1>
           <p className="home-description">
-            Celebra con nosotros la diversidad en la Semana de la Inclusión.
+            Muestra tu esencia en nuestro mural.
           </p>
 
           <input
             type="text"
             value={userName}
             onChange={(e) => setUserName(e.target.value)}
-            placeholder="Escribe tu nombre"
+            placeholder="Escribe tu nombre completo"
             style={{
               width: '100%',
               padding: '0.6rem',

@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react'
 import marco from '../assets/marco.png'
 
-function ImageEditor({ image }) {
+function ImageEditor({ image, userName }) {
   const canvasRef = useRef()
 
   useEffect(() => {
@@ -37,7 +37,22 @@ function ImageEditor({ image }) {
         // Número ficticio
         ctx.textAlign = "center"; // Centra horizontalmente el texto
         ctx.textBaseline = "bottom"; // Alinea verticalmente por la parte inferior
-        ctx.fillText('Participación Nº 001', canvas.width / 2, canvas.height - 10);
+        ctx.fillText('Participación Nº 001', canvas.width / 2, canvas.height - 10)
+
+// --- AHORA dibujamos el nombre POR ENCIMA DE TODO ---
+let fontSize = 18
+ctx.font = `${fontSize}px sans-serif`
+ctx.fillStyle = '#000'
+
+const maxWidth = 200
+while (ctx.measureText(userName).width > maxWidth && fontSize > 8) {
+  fontSize--
+  ctx.font = `${fontSize}px sans-serif`
+}
+
+ctx.textAlign = "right"
+ctx.textBaseline = "top"
+ctx.fillText(userName, canvas.width - 20, 20)
 
       }
     }
